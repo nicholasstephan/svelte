@@ -10,7 +10,9 @@ interface TickContext<T> {
 }
 
 function tick_spring<T>(ctx: TickContext<T>, last_value: T, current_value: T, target_value: T): T {
-	if (typeof current_value === 'number' || is_date(current_value)) {
+	if (typeof current_value === 'undefined') {
+		return target_value; // settled
+	} else if (typeof current_value === 'number' || is_date(current_value)) {
 		// @ts-ignore
 		const delta = target_value - current_value;
 		// @ts-ignore
@@ -34,9 +36,9 @@ function tick_spring<T>(ctx: TickContext<T>, last_value: T, current_value: T, ta
 			tick_spring(ctx, last_value[i], current_value[i], target_value[i]));
 	} else if (typeof current_value === 'object') {
 		const next_value = {};
-		for (const k in current_value) {
+		for (const k in target_value) {
 			// @ts-ignore
-			next_value[k] = tick_spring(ctx, last_value[k], current_value[k], target_value[k]);
+			next_value[k] = tick_spring(ctx, last_value ? last_value[k] : current_value[k], current_value[k], target_value[k]);
 		}
 		// @ts-ignore
 		return next_value;

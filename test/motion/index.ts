@@ -10,6 +10,22 @@ describe('motion', () => {
 			size.set(100);
 			assert.equal(get(size), 100);
 		});
+
+		xit('ignores undefined target object properties', async () => {
+			const size = spring({a:0, b:0}, { stiffness: 0.5, damping: 0.5 });
+
+			// @ts-ignore
+			await size.set({a:10}, {soft:true});
+			assert.equal(get(size), {a:10});
+		});
+
+		xit('sets new object properties immediately', async () => {
+			const size = spring({}, { stiffness: 0.5, damping: 0.5 });
+
+			// @ts-ignore
+			await size.set({a:10}, {soft:true});
+			assert.equal(get(size), {a:10});
+		});
 	});
 
 	describe('tweened', () => {
