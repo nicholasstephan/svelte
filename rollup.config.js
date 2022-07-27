@@ -7,7 +7,7 @@ import sucrase from '@rollup/plugin-sucrase';
 import typescript from '@rollup/plugin-typescript';
 import pkg from './package.json';
 
-const is_publish = !!process.env.PUBLISH;
+const is_publish = true;//!!process.env.PUBLISH;
 
 const ts_plugin = is_publish
 	? typescript({
